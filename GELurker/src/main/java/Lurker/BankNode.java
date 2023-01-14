@@ -11,7 +11,7 @@ import org.dreambot.api.wrappers.interactive.NPC;
 public class BankNode extends Node {
 
     public BankNode(Utils utils) {
-        super(utils, "Banking");
+        super(utils);
     }
 
     @Override
@@ -21,7 +21,7 @@ public class BankNode extends Node {
 
     @Override
     public boolean accept() {
-        return Inventory.isFull() && (NPCs.closest("Banker") != null);
+        return utils.isStarted() && Inventory.isFull() && (NPCs.closest("Banker") != null);
     }
 
     @Override

@@ -9,11 +9,9 @@ public abstract class Node extends TaskNode implements ItemContainerListener {
 
     Utils utils;
 
-    String status;
 
-    public Node(Utils utils, String status){
+    public Node(Utils utils){
         this.utils = utils;
-        this.status = status;
     }
 
     @Override

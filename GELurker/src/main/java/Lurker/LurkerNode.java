@@ -8,11 +8,14 @@ import org.dreambot.api.methods.grandexchange.LivePrices;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.item.GroundItems;
 import org.dreambot.api.methods.map.Area;
+import org.dreambot.api.script.ScriptManager;
 import org.dreambot.api.script.TaskNode;
+import org.dreambot.api.script.listener.ChatListener;
 import org.dreambot.api.script.listener.ItemContainerListener;
 import org.dreambot.api.utilities.InventoryMonitor;
 import org.dreambot.api.wrappers.items.GroundItem;
 import org.dreambot.api.wrappers.items.Item;
+import org.dreambot.api.wrappers.widgets.message.Message;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -24,8 +27,9 @@ import java.util.List;
 public class LurkerNode extends Node {
 
     public LurkerNode(Utils utils) {
-        super(utils, "Looking for items");
+        super(utils);
     }
+
 
     @Override
     public int priority() {
@@ -39,7 +43,7 @@ public class LurkerNode extends Node {
 
     @Override
     public boolean accept() {
-        return utils.getGrandExchangeArea().contains(Players.getLocal()) && !Inventory.isFull();
+        return utils.isStarted() && utils.getGrandExchangeArea().contains(Players.getLocal()) && !Inventory.isFull();
     }
 
     @Override
@@ -47,11 +51,13 @@ public class LurkerNode extends Node {
         List<GroundItem> items = GroundItems.all();
         for (int i = 0; i < items.size(); ++i) {
             if (items.get(i) != null && utils.getGrandExchangeArea().contains(items.get(i))) {
-                items.get(i).interact("Take");
-                sleepUntil(() -> Players.getLocal().isMoving(), 5000, 500);
-                int finalI = i;
-                sleepUntil(() -> !items.get(finalI).canReach(), 10000, 500);
-                break;
+                if (LivePrices.get(items.get(i).getItem()) >= utils.getMinimum()){
+                    items.get(i).interact("Take");
+                    sleepUntil(() -> Players.getLocal().isMoving(), 1000, 200);
+                    int finalI = i;
+                    sleepUntil(() -> !items.get(finalI).exists(), 2000, 500);
+                    break;
+                }
             }
         }
         return Calculations.random(500, 2000);
