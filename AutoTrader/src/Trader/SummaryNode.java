@@ -5,7 +5,11 @@ import org.dreambot.api.methods.trade.Trade;
 import org.dreambot.api.methods.trade.TradeUser;
 import org.dreambot.api.script.TaskNode;
 
-public class SummaryNode extends TaskNode {
+public class SummaryNode extends Node {
+
+    public SummaryNode(Utils utils) {
+        super(utils);
+    }
 
     @Override
     public int priority(){
@@ -14,7 +18,7 @@ public class SummaryNode extends TaskNode {
 
     @Override
     public boolean accept() {
-        return Trade.isOpen(2);
+        return utils.isStarted()&& Trade.isOpen(2);
     }
 
     @Override

@@ -7,17 +7,19 @@ import org.dreambot.api.script.TaskNode;
 import org.dreambot.api.script.listener.ChatListener;
 import org.dreambot.api.wrappers.widgets.message.Message;
 
-public class AccepterNode extends TaskNode  {
+public class AccepterNode extends Node  {
 
     private boolean incomingTrade = false;
     private String trader;
+
 
     @Override
     public int priority(){
         return 2;
     }
 
-    AccepterNode(){
+    AccepterNode(Utils utils){
+        super(utils);
         ScriptManager.getScriptManager().addListener(new ChatListener() {
             @Override
             public void onTradeMessage(Message message) {
@@ -29,7 +31,7 @@ public class AccepterNode extends TaskNode  {
 
     @Override
     public boolean accept() {
-        return incomingTrade;
+        return utils.isStarted() && incomingTrade;
     }
 
     @Override
