@@ -15,32 +15,27 @@ import java.util.Locale;
 import static java.lang.Integer.parseInt;
 
 public class GUI {
-    private JButton startButton;
-    private JPanel panel1;
-    private JTextField textField1;
-    JFrame g = new JFrame();
-    private Utils utils;
 
-    public void close(){
-        g.dispose();
-    }
+    private Utils utils;
 
     public GUI(Utils utilitats) {
         utils = utilitats;
+        JPanel panel1 = new JPanel();
+        JButton startButton = new JButton("Start");
+        JTextField textField1 = new JTextField();
+        JLabel label = new JLabel("Please enter the minimum value of the items to pick up");
+        JLabel label2 = new JLabel("Blank means 1 coin");
+        JLabel title = new JLabel("GE Lurker");
 
-        g.setSize(300, 400);
+
+        JFrame g = new JFrame("frame");
+        g.setSize(1000, 1000);
         g.setLocationByPlatform(true);
         g.setResizable(false);
         g.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Add this so you don't close out DB if you close your GUIt
-        g.getContentPane().setLayout(new BorderLayout());
-        g.getContentPane().add(panel1, BorderLayout.CENTER);
-        g.pack();
-        g.setVisible(true);
 
-    }
+        panel1.add(label);
 
-    private void createUIComponents() {
-        textField1 = new JTextField();
         ((AbstractDocument)textField1.getDocument()).setDocumentFilter(new DocumentFilter() {
             @Override
             public void insertString(FilterBypass fb, int offset, String string,
@@ -68,6 +63,7 @@ public class GUI {
             }
         });
 
+
         textField1.addFocusListener(new FocusAdapter() {
             public void focusLost(FocusEvent e) {
                 if (textField1.getText().isEmpty()) {
@@ -76,7 +72,6 @@ public class GUI {
             }
         });
 
-        startButton = new JButton();
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -84,5 +79,32 @@ public class GUI {
                 g.dispose();
             }
         });
+
+
+        startButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, startButton.getPreferredSize().height));
+        startButton.setPreferredSize(new Dimension(startButton.getPreferredSize().width,50));
+
+        title.setFont(label.getFont().deriveFont(24.0f));
+
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
+        label2.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+
+        panel1.setLayout(new BoxLayout(panel1, BoxLayout.Y_AXIS));
+        panel1.add(title);
+        panel1.add(label);
+        panel1.add(label2);
+        panel1.add(textField1);
+        panel1.add(startButton);
+        g.add(panel1);
+
+
+        g.getContentPane().setLayout(new BorderLayout());
+        g.getContentPane().add(panel1, BorderLayout.NORTH);
+        g.pack();
+        g.setVisible(true);
     }
 }
