@@ -13,38 +13,23 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GUI {
-    private JTextField textField1;
-    private JButton startButton;
-    private JPanel panel;
-    private JLabel title;
-    private JLabel description;
-    JFrame g = new JFrame();
+
     private Utils utils;
 
 
     public GUI(Utils utilitats) {
         utils = utilitats;
-        g.setSize(300, 400);
+        JFrame g = new JFrame("Auto Trader by Dreamwiver");
+        g.setSize(1000, 1000);
         g.setLocationByPlatform(true);
         g.setResizable(false);
         g.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Add this so you don't close out DB if you close your GUIt
-        g.getContentPane().setLayout(new BorderLayout());
-        g.getContentPane().add(panel, BorderLayout.CENTER);
-        g.pack();
-        g.setVisible(true);
-    }
+        JPanel panel = new JPanel();
 
-    public void close(){
-        g.dispose();
-    }
-
-    private void createUIComponents() {
-        startButton = new JButton();
-        description = new JLabel();
-        description.setBorder(new EmptyBorder(30, 30, 10, 30));
-        title = new JLabel();
-        title.setFont(title.getFont().deriveFont(24.0f));
-        textField1 = new JTextField();
+        JButton startButton = new JButton("Start");
+        JLabel description = new JLabel("Please, enter your message. You can leave it in blank");
+        JLabel title = new JLabel("DW Autotrader");
+        JTextField textField1 = new JTextField();
         ((AbstractDocument) textField1.getDocument()).setDocumentFilter(new DocumentFilter() {
             @Override
             public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
@@ -71,9 +56,8 @@ public class GUI {
                 utils.setMessage(textField1.getText());
             }
         });
-        startButton.setPreferredSize(new Dimension(100, 50));
 
-       // startButton.setEnabled(utils.isStarted());
+        // startButton.setEnabled(utils.isStarted());
 
 
         startButton.addActionListener(new ActionListener() {
@@ -82,5 +66,29 @@ public class GUI {
                 g.dispose();
             }
         });
+
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        description.setAlignmentX(Component.CENTER_ALIGNMENT);
+        startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        title.setFont(new Font("Arial", Font.PLAIN, 30));
+        title.setBorder(new EmptyBorder(10, 10, 10, 10));
+        description.setBorder(new EmptyBorder(10, 10, 10, 10));
+        description.setFont(new Font("Arial", Font.PLAIN, 15));
+        startButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, startButton.getPreferredSize().height));
+        startButton.setPreferredSize(new Dimension(startButton.getPreferredSize().width,50));
+        panel.add(title);
+        panel.add(description);
+        panel.add(textField1);
+        panel.add(startButton);
+        g.add(panel);
+        g.getContentPane().setLayout(new BorderLayout());
+        g.getContentPane().add(panel, BorderLayout.NORTH);
+        g.pack();
+        g.setVisible(true);
     }
+
+
+
+
 }
