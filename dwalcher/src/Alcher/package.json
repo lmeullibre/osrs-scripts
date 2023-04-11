@@ -1,0 +1,15 @@
+{
+  "name": "alcher",
+  "version": "1.0.0",
+  "description": "la baina loca",
+  "main": "index.js",
+  "dependencies": {
+    "flask": "^0.2.10"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
