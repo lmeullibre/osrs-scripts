@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="Slayer:jar">
+    <output-path>$USER_HOME$/DreamBot/Scripts</output-path>
+    <root id="archive" name="Slayer.jar">
+      <element id="module-output" name="Slayer" />
+      <element id="extracted-dir" path="$USER_HOME$/DreamBot/BotData/client.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
