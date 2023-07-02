@@ -5,9 +5,14 @@ import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.wrappers.interactive.NPC;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Utils {
     private int total = 0;
     private String message;
+    private List<String> messages = new ArrayList<>();
+
     private boolean start;
     private Tile startingTile;
 
@@ -16,6 +21,18 @@ public class Utils {
         this.message = "";
         this.start = false;
         this.startingTile = Players.getLocal().getTile();
+    }
+
+    public void addMessage(String message) {
+        this.messages.add(message);
+    }
+
+    public String getRandomMessage() {
+        if (!messages.isEmpty()) {
+            int index = (int) (Math.random() * messages.size());
+            return messages.get(index);
+        }
+        return "";  // default message if the list is empty
     }
 
     public void start(){

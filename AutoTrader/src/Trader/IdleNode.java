@@ -24,8 +24,8 @@ public class IdleNode extends Node {
 
     @Override
     public int execute() {
-        if (Math.random() < 1.0 / 15.0 && utils.getMessage() != "") {
-            Keyboard.type(utils.getMessage());
+        if (Math.random() < 1.0 / 15.0 && !utils.getRandomMessage().isEmpty()) {
+            Keyboard.type(utils.getRandomMessage());
             return Calculations.random(1000, 3000);
         }
         return Calculations.random(200, 1000);

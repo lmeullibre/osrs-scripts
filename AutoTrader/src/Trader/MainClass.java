@@ -19,7 +19,7 @@ import org.dreambot.core.Instance;
 import javax.swing.*;
 import java.awt.*;
 
-@ScriptManifest(version = 1.0, author = "dreamwiver", category = Category.MISC, name = "Auto Trader")
+@ScriptManifest(version = 1.1, author = "dreamwiver", category = Category.MISC, name = "Auto Trader")
 public class MainClass extends TaskScript implements ChatListener {
     private Utils utils;
     private GUI gui;
