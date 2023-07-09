@@ -3,7 +3,7 @@ package Lurker;
 import org.dreambot.api.methods.map.Area;
 
 public class Utils {
-    private Area grandExchangeArea = new Area(3150, 3505, 3179, 3476);
+    private Area grandExchangeArea = new Area(3142, 3513, 3184, 3472);
     private int total = 0;
     private boolean start;
     private int minimum = 1;
