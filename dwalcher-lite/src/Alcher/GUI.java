@@ -1,5 +1,4 @@
 package Alcher;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.AttributeSet;
@@ -18,7 +17,7 @@ public class GUI {
 
     public GUI(Utils utils) {
         this.utils = utils;
-        JFrame g = new JFrame("DW Alcher");
+        JFrame g = new JFrame("DW Alcher Lite");
         g.setSize(1000, 1000);
         g.setLocationByPlatform(true);
         g.setResizable(false);
@@ -35,13 +34,14 @@ public class GUI {
 
         JButton startButton = new JButton("Start");
         startButton.setToolTipText("<html>Before pressing Start, make sure you are near the Grand Exchange,<br>have enough coins, and have nature runes in your inventory.</html>");
-        JLabel titleLabel = new JLabel("DW Alcher");
+        JLabel titleLabel = new JLabel("DW Alcher Lite");
         JLabel subtitleLabel = new JLabel("by Dreamwiver");
         JLabel descriptionLabel = new JLabel("Maximum coins to spend:");
         JTextField maxCoinsField = new JTextField(10);
+        JLabel infoLabel = new JLabel("Max: 1,000,000 coins");
 
-        // Apply document filter to allow only numeric input
-        ((PlainDocument) maxCoinsField.getDocument()).setDocumentFilter(new NumberOnlyFilter());
+        // Apply document filter to allow only numeric input and limit to 1,000,000
+        ((PlainDocument) maxCoinsField.getDocument()).setDocumentFilter(new NumberOnlyFilter(1000000));
 
         startButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -57,6 +57,7 @@ public class GUI {
         descriptionLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         maxCoinsField.setAlignmentX(Component.CENTER_ALIGNMENT);
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        infoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         titleLabel.setFont(new Font("Arial", Font.PLAIN, 30));
         subtitleLabel.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -68,10 +69,13 @@ public class GUI {
         startButton.setPreferredSize(new Dimension(200, 60));
         maxCoinsField.setMaximumSize(new Dimension(100, maxCoinsField.getPreferredSize().height));
         maxCoinsField.setFont(new Font("Arial", Font.PLAIN, 15));
+        infoLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+        infoLabel.setBorder(new EmptyBorder(0, 10, 10, 10));
         panel.add(titleLabel);
         panel.add(subtitleLabel);
         panel.add(descriptionLabel);
         panel.add(maxCoinsField);
+        panel.add(infoLabel);
         panel.add(Box.createRigidArea(new Dimension(0, 10)));  // Adds a 10-pixel-high space
         panel.add(startButton);
         g.add(panel);
@@ -81,16 +85,30 @@ public class GUI {
         g.setVisible(true);
     }
 
-    // Document filter to allow only numeric input
+    // Document filter to allow only numeric input and limit to a maximum value
     private static class NumberOnlyFilter extends DocumentFilter {
+        private int maxValue;
+
+        public NumberOnlyFilter(int maxValue) {
+            this.maxValue = maxValue;
+        }
+
         @Override
         public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
-            fb.insertString(offset, string.replaceAll("\\D", ""), attr);
+            String newValue = fb.getDocument().getText(0, fb.getDocument().getLength()) + string.replaceAll("\\D", "");
+            int value = newValue.isEmpty() ? 0 : Integer.parseInt(newValue);
+            if (value <= maxValue) {
+                super.insertString(fb, offset, string, attr);
+            }
         }
 
         @Override
         public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-            fb.replace(offset, length, text.replaceAll("\\D", ""), attrs);
+            String newValue = fb.getDocument().getText(0, fb.getDocument().getLength()) + text.replaceAll("\\D", "");
+            int value = newValue.isEmpty() ? 0 : Integer.parseInt(newValue);
+            if (value <= maxValue) {
+                super.replace(fb, offset, length, text, attrs);
+            }
         }
     }
 }

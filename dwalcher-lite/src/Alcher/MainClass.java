@@ -28,9 +28,7 @@ public class MainClass extends TaskScript {
 
     public void onPaint(Graphics2D g) {
         if (utils.getActiveItem() != null) g.drawString("Active item: " + utils.getActiveItem().getName() ,12,80);
-        if (utils.getActiveItemQuantity() != -1) g.drawString("Amount bought: " + utils.getActiveItemQuantity() ,12,90);
-        g.drawString("Coins spent: " + utils.getSpentCoins() ,12,100);
-        TaskNode previousNode = getLastTaskNode();
-        if (previousNode != null) g.drawString("State: " + previousNode.getClass().getName() ,12,110);
+        if (utils.getActiveItemQuantity() != -1) g.drawString("Amount bought: " + utils.getActiveItemQuantity() ,12,95);
+        g.drawString("Coins spent: " + utils.getSpentCoins() ,12,110);
     }
 }
