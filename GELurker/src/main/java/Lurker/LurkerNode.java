@@ -24,6 +24,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
+import static org.dreambot.api.methods.walking.impl.Walking.isRunEnabled;
+import static org.dreambot.api.methods.walking.impl.Walking.toggleRun;
+
 
 public class LurkerNode extends Node {
 
@@ -48,6 +51,9 @@ public class LurkerNode extends Node {
 
     @Override
     public int execute() {
+        if (!isRunEnabled()){
+            toggleRun();
+        }
         List<GroundItem> items = GroundItems.all();
         for (int i = 0; i < items.size(); ++i) {
             GroundItem item = items.get(i);
