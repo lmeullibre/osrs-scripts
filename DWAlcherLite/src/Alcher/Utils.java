@@ -1,27 +1,43 @@
 package Alcher;
+import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.wrappers.items.Item;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
+
+import static org.dreambot.api.methods.input.mouse.MouseSettings.setSpeed;
 
 public class Utils {
     private boolean isRunning;
 
     private boolean killed;
+
+    private int maxCoinsPerSet;
+
     private double mistakeRate;
+
+    private int earnedCoins;
 
     private int activeItemQuantity;
     private Queue<Item> profitableItems;  // Changed from List to Queue
 
+    private Instant startTime;
+    private int alchsPerformed;
+
     private int maxCoins;
+
     private int spentCoins;
     public Utils() {
         isRunning = false;
         killed = false;
         activeItemQuantity = -1;
         mistakeRate = 0.1;
-        maxCoins = 20000;
         spentCoins = 0;
         profitableItems = new LinkedList<>();  // Initialized as a LinkedList, which is a type of Queue
+        maxCoinsPerSet = 10000;
+        earnedCoins = 0;
+        maxCoins = 2147483647;
     }
 
     public boolean isRunning() {
@@ -38,10 +54,6 @@ public class Utils {
 
     public void addProfitableItem(Item item) {
         profitableItems.add(item);
-    }
-
-    public Queue<Item> getProfitableItems() {  // Return type changed to Queue
-        return profitableItems;
     }
 
     public int getMaxCoins(){
@@ -80,12 +92,13 @@ public class Utils {
         this.spentCoins += amount;
     }
 
-    public boolean isOutOfMoney() {
-        return this.spentCoins >= this.maxCoins;
-    }
 
-    public void clearProfitableItems() {
-        profitableItems.clear();
+    public void setRandomMouseSpeed() {
+        // Set the mouse speed to a random value within a range that resembles human-like behavior
+        int minSpeed = 10; // Minimum speed that is still human-like
+        int maxSpeed = 20; // Maximum speed that is still human-like
+        int randomSpeed = Calculations.random(minSpeed, maxSpeed);
+        setSpeed(randomSpeed);
     }
 
     public Item getActiveItem() {
@@ -94,5 +107,33 @@ public class Utils {
 
     public void nextActiveItem() {
         profitableItems.poll();  // Removes the item at the head of the queue
+    }
+
+    public void startTiming() {
+        this.startTime = Instant.now();
+    }
+
+    public void incrementAlchsPerformed() {
+        this.alchsPerformed++;
+    }
+
+    public void incrementProfit(int coins){
+        earnedCoins = earnedCoins + coins;
+    }
+
+    public double getAlchsPerHour() {
+        Instant now = Instant.now();
+        Duration timeElapsed = Duration.between(startTime, now);
+        double hoursElapsed = timeElapsed.toMillis() / 1000.0 / 60.0 / 60.0;
+
+        return alchsPerformed / hoursElapsed;
+    }
+
+    public int getMaxCoinsPerSet() {
+        return this.maxCoinsPerSet;
+    }
+
+    public int getProfit(){
+        return this.earnedCoins -this.spentCoins;
     }
 }

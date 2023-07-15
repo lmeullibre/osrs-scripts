@@ -49,7 +49,6 @@ public class AlchItemsNode extends Node {
 
     @Override
     public int execute() {
-        log("que colons pasa que no va");
         // Occasionally rotate the camera
         if (Math.random() < utils.getMistakeRate()) { // use mistakeRate to decide if to rotate camera
             Camera.rotateTo(Calculations.random(0, 360), Calculations.random(0, 90));
@@ -85,8 +84,6 @@ public class AlchItemsNode extends Node {
         }
 
         Item itemToAlch = Inventory.get(activeItem.getName());
-        log("el item to alch");
-        log(itemToAlch.getName());
         if (itemToAlch != null) {
             if (Magic.canCast(Normal.HIGH_LEVEL_ALCHEMY)) {
                 int initialNoteCount = Inventory.count(itemToAlch.getID()); // Get the initial note count
@@ -113,12 +110,15 @@ public class AlchItemsNode extends Node {
                 Magic.castSpellOn(Normal.HIGH_LEVEL_ALCHEMY, itemToAlch);
                 sleepUntil(() -> Inventory.count(itemToAlch.getID()) < initialNoteCount, 2000, 1000);
 
+                int earned = itemToAlch.getHighAlchValue() - LivePrices.get("Nature rune");
+                utils.incrementProfit(earned);
                 // Subtract one from the amount of items in utils
                 int currentAmount = utils.getActiveItemQuantity();
+                utils.incrementAlchsPerformed();
                 utils.setActiveItemQuantity(currentAmount - 1);
             }
         }
-        log("ola ola ola");
+        utils.setRandomMouseSpeed();
         return Calculations.random(1000, 3000);
     }
 }

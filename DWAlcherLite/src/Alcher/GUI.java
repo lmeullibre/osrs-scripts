@@ -38,15 +38,21 @@ public class GUI {
         JLabel subtitleLabel = new JLabel("by Dreamwiver");
         JLabel descriptionLabel = new JLabel("Maximum coins to spend:");
         JTextField maxCoinsField = new JTextField(10);
-        JLabel infoLabel = new JLabel("Max: 1,000,000 coins");
+        JLabel infoLabel = new JLabel("Blank means max stack");
 
         // Apply document filter to allow only numeric input and limit to 1,000,000
-        ((PlainDocument) maxCoinsField.getDocument()).setDocumentFilter(new NumberOnlyFilter(1000000));
+        ((PlainDocument) maxCoinsField.getDocument()).setDocumentFilter(new NumberOnlyFilter(2147483647));
+
+
+
 
         startButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                int maxCoins = Integer.parseInt(maxCoinsField.getText());
-                utils.setMaxCoins(maxCoins);
+                String input = maxCoinsField.getText();
+                if (!input.isEmpty()) {
+                    int maxCoins = Integer.parseInt(input);
+                    utils.setMaxCoins(maxCoins);
+                }
                 utils.setRunning();
                 g.dispose();
             }
