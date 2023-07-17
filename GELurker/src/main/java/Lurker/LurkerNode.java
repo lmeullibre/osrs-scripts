@@ -8,7 +8,6 @@ import org.dreambot.api.methods.grandexchange.LivePrices;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.item.GroundItems;
 import org.dreambot.api.methods.map.Area;
-import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.script.ScriptManager;
 import org.dreambot.api.script.TaskNode;
 import org.dreambot.api.script.listener.ChatListener;
@@ -24,15 +23,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
-import static org.dreambot.api.methods.walking.impl.Walking.isRunEnabled;
-import static org.dreambot.api.methods.walking.impl.Walking.toggleRun;
-
 
 public class LurkerNode extends Node {
 
     public LurkerNode(Utils utils) {
         super(utils);
     }
+
 
     @Override
     public int priority() {
@@ -51,25 +48,15 @@ public class LurkerNode extends Node {
 
     @Override
     public int execute() {
-        if (!isRunEnabled()){
-            toggleRun();
-        }
         List<GroundItem> items = GroundItems.all();
         for (int i = 0; i < items.size(); ++i) {
-            GroundItem item = items.get(i);
-            if (item != null && utils.getGrandExchangeArea().contains(item)) {
-                String itemName = item.getName();
-                if (!utils.isItemExcluded(itemName) && LivePrices.get(item.getItem()) >= utils.getMinimum()){
-                    item.interact("Take");
+            if (items.get(i) != null && utils.getGrandExchangeArea().contains(items.get(i))) {
+                if (LivePrices.get(items.get(i).getItem()) >= utils.getMinimum()){
+                    items.get(i).interact("Take");
                     sleepUntil(() -> Players.getLocal().isMoving(), 1000, 200);
                     int finalI = i;
                     sleepUntil(() -> !items.get(finalI).exists(), 2000, 500);
-
-                    // if the item was outside the safe area, return to the difference area
-                    if (!utils.getSafeArea().contains(Players.getLocal())) {
-                        Walking.walk(utils.getSafeArea().getRandomTile());
-                        sleepUntil(() -> !Players.getLocal().isMoving(), 1000, 200);
-                    }
+                    break;
                 }
             }
         }

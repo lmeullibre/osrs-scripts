@@ -2,14 +2,8 @@ package Lurker;
 
 import org.dreambot.api.methods.map.Area;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class Utils {
-    private Area grandExchangeArea = new Area(3142, 3513, 3184, 3472);
-    private Area safeArea = new Area(3156, 3497, 3172, 3482);
-    private Set<String> excludedItems = new HashSet<>();
-
+    private Area grandExchangeArea = new Area(3150, 3505, 3179, 3476);
     private int total = 0;
     private boolean start;
     private int minimum = 1;
@@ -40,22 +34,8 @@ public class Utils {
         total = total + newItemPrice;
     }
 
-
-    public void addExcludedItem(String item) {
-        excludedItems.add(item);
-    }
-
-    public void removeExcludedItem(String item) {
-        excludedItems.remove(item.toLowerCase());
-    }
-
-    public boolean isItemExcluded(String item) {
-        return excludedItems.contains(item.toLowerCase());
-    }
-
-
-    public Area getSafeArea(){
-        return safeArea;
+    public int getTotal() {
+        return total;
     }
 
 }
