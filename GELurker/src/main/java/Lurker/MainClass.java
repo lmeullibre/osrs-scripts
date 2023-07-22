@@ -15,7 +15,7 @@ import org.dreambot.core.Instance;
 import javax.swing.*;
 import java.awt.*;
 
-@ScriptManifest(version = 1.1, author = "dreamwiver", category = Category.MISC, name = "Grand Exchange Lurker")
+@ScriptManifest(version = 1.04, author = "dreamwiver", category = Category.MISC, name = "Grand Exchange Lurker")
 public class MainClass extends TaskScript implements ItemContainerListener {
 
     private Utils utils;

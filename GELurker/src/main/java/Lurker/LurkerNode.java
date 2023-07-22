@@ -8,12 +8,16 @@ import org.dreambot.api.methods.grandexchange.LivePrices;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.item.GroundItems;
 import org.dreambot.api.methods.map.Area;
+import org.dreambot.api.methods.map.Map;
+import org.dreambot.api.methods.map.Tile;
+import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.script.ScriptManager;
 import org.dreambot.api.script.TaskNode;
 import org.dreambot.api.script.listener.ChatListener;
 import org.dreambot.api.script.listener.ItemContainerListener;
 import org.dreambot.api.utilities.InventoryMonitor;
 import org.dreambot.api.wrappers.items.GroundItem;
+import java.util.Comparator;
 import org.dreambot.api.wrappers.items.Item;
 import org.dreambot.api.wrappers.widgets.message.Message;
 
@@ -43,20 +47,49 @@ public class LurkerNode extends Node {
 
     @Override
     public boolean accept() {
-        return utils.isStarted() && utils.getGrandExchangeArea().contains(Players.getLocal()) && !Inventory.isFull();
+        return utils.isStarted() && utils.getBigArea().contains(Players.getLocal()) && !Inventory.isFull();
+    }
+
+    public Tile getClosestTileInArea(Area area, Tile playerTile) {
+        Tile closestTile = null;
+        double closestDistance = Double.MAX_VALUE;
+        for (Tile tile : area.getTiles()) {
+            double distance = playerTile.distance(tile);
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closestTile = tile;
+            }
+        }
+        return closestTile;
     }
 
     @Override
     public int execute() {
+        if (!Walking.isRunEnabled()){
+            Walking.toggleRun();
+        };
         List<GroundItem> items = GroundItems.all();
-        for (int i = 0; i < items.size(); ++i) {
-            if (items.get(i) != null && utils.getGrandExchangeArea().contains(items.get(i))) {
-                if (LivePrices.get(items.get(i).getItem()) >= utils.getMinimum()){
-                    items.get(i).interact("Take");
+        items.sort(Comparator.comparingInt(item -> (int) item.distance(Players.getLocal())));
+        for (GroundItem item : items) {
+            if (item != null && utils.getGrandExchangeArea().contains(item)) {
+                if (LivePrices.get(item.getItem()) >= utils.getMinimum()) {
+                    item.interact("Take");
                     sleepUntil(() -> Players.getLocal().isMoving(), 1000, 200);
-                    int finalI = i;
-                    sleepUntil(() -> !items.get(finalI).exists(), 2000, 500);
-                    break;
+                    sleepUntil(() -> !item.exists(), 2000, 500);
+                    if (utils.getBigArea().contains(Players.getLocal().getTile())) {
+                        List<GroundItem> itemsOutside = GroundItems.all();
+                        itemsOutside.sort(Comparator.comparingInt(i -> (int) i.distance(Players.getLocal())));
+                        for (GroundItem itemOutside : itemsOutside) {
+                            if (itemOutside != null && utils.getBigArea().contains(itemOutside)) {
+                                itemOutside.interact("Take");
+                                sleepUntil(() -> !itemOutside.exists(), 2000, 500);
+                            }
+                        }
+                        Tile closestTile = getClosestTileInArea(utils.getGrandExchangeArea(), Players.getLocal().getTile());
+                        if (closestTile != null) {
+                            Walking.walk(closestTile);
+                        }
+                    }
                 }
             }
         }

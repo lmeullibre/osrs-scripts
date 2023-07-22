@@ -20,7 +20,7 @@ public class ToGrandExchangeNode extends Node {
 
     @Override
     public boolean accept() {
-        return utils.isStarted() && !utils.getGrandExchangeArea().contains(Players.getLocal().getTile());
+        return utils.isStarted() && !utils.getBigArea().contains(Players.getLocal().getTile());
     }
 
     @Override
