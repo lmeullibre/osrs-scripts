@@ -21,7 +21,6 @@ public class Utils {
     private int total = 0;
     private boolean start;
     private int minimum = 1;
-
     public Utils(){
         start = false;
         Dotenv dotenv = Dotenv.load();
