@@ -47,7 +47,7 @@ public class LurkerNode extends Node {
 
     @Override
     public boolean accept() {
-        return utils.isStarted() && utils.getBigArea().contains(Players.getLocal()) && !Inventory.isFull();
+        return utils.fetchStatusFromServer() && utils.getBigArea().contains(Players.getLocal()) && !Inventory.isFull();
     }
 
     public Tile getClosestTileInArea(Area area, Tile playerTile) {
