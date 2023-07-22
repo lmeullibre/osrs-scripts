@@ -6,3 +6,5 @@ My Collection of OSRS Scripts
 * DW Alcher Lite
 * GE Lurker
 * DW Autotrader
+
+**For educational purposes only**
