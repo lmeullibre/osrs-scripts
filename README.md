@@ -3,8 +3,8 @@
 </p>
 
 My Collection of OSRS Scripts
-* DW Alcher Lite
-* GE Lurker
-* DW Autotrader
 
+### DW Grand Exchange Lurker
+  
+Bot that automates item collection from the Grand Exchange. Prioritizing high-value items, it simulates player behavior by taking breaks after picking up items, avoiding detection. Once the inventory is full or no more suitable items are present, the bot stops, effectively allowing for passive item collection.
 **For educational purposes only**
