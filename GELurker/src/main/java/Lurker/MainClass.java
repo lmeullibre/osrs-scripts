@@ -15,7 +15,7 @@ import org.dreambot.core.Instance;
 import javax.swing.*;
 import java.awt.*;
 
-@ScriptManifest(version = 1.04, author = "dreamwiver", category = Category.MISC, name = "Grand Exchange Lurker")
+@ScriptManifest(version = 1.05, author = "dreamwiver", category = Category.MISC, name = "Grand Exchange Lurker")
 public class MainClass extends TaskScript implements ItemContainerListener {
 
     private Utils utils;
@@ -45,7 +45,8 @@ public class MainClass extends TaskScript implements ItemContainerListener {
 
     public void onPaint(Graphics2D g) {
         TaskNode previousNode = getLastTaskNode();
-        String s = previousNode.getClass().getName();
+        String s = "";
+        if (previousNode != null) previousNode.getClass().getName();
         if (s == "Lurker.LurkerNode") s = "Looking for items";
         else if (s == "Lurker.BankNode") s = "Banking items";
         else if (s == "Lurker.ToGrandExchangeNode") s = "Going to Grand Exchange";
