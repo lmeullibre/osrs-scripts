@@ -1,8 +1,10 @@
 package Lurker;
 
 import com.google.gson.Gson;
-import io.github.cdimascio.dotenv.Dotenv;
 import org.dreambot.api.methods.map.Area;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import java.io.InputStreamReader;
@@ -20,12 +22,14 @@ public class Utils {
 
     private int total = 0;
     private boolean start;
-    private int minimum = 1;
 
+    private List<String> nonWantedItems;
+
+    private int minimum = 1;
     public Utils(){
         start = false;
-        Dotenv dotenv = Dotenv.load();
-        statusURL = dotenv.get("SERVER_URL");
+        nonWantedItems = new ArrayList<>();
+        statusURL = "https://django-server-production-f068.up.railway.app/manager/get_status/1/";
     }
 
     public int getMinimum(){
@@ -56,6 +60,14 @@ public class Utils {
         return total;
     }
 
+    public void addNonWantedItem(String itemName){
+        nonWantedItems.add(itemName.toLowerCase());
+    }
+
+    public boolean isNonWantedItem(String itemName){
+        return nonWantedItems.contains(itemName.toLowerCase());
+    }
+
     public boolean fetchStatusFromServer() {
         boolean status = false;
         try {
@@ -71,12 +83,15 @@ public class Utils {
             Reader reader = new InputStreamReader(conn.getInputStream(), "UTF-8");
             Map<String, Object> map = new Gson().fromJson(reader, Map.class);
             status = (Boolean) map.get("status");
-
             conn.disconnect();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return status;
+    }
+
+    public void removeNonWantedItem(String item) {
+        nonWantedItems.remove(item);
     }
 
 }

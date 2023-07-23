@@ -5,7 +5,7 @@
 
     <groupId>com.dreamwiver.gelurker</groupId>
     <artifactId>gelurker</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
 
     <properties>
         <!-- java properties -->
@@ -22,16 +22,33 @@
             <artifactId>java-dotenv</artifactId>
             <version>5.2.2</version>
         </dependency>
+        <dependency>
+            <groupId>dreambot</groupId>
+            <artifactId>client</artifactId>
+            <version>3.0.0</version>
+            <scope>system</scope>
+            <systemPath>${dreambot.path}/BotData/client.jar</systemPath>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.1</version>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <shadedArtifactAttached>true</shadedArtifactAttached>
+                    <shadedClassifierName>dep-included</shadedClassifierName>
+                    <outputDirectory>${dreambot.path}/Scripts</outputDirectory>
                 </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
