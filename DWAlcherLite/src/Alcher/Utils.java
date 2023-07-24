@@ -123,10 +123,12 @@ public class Utils {
     }
 
     public double getAlchsPerHour() {
+        if (startTime == null) {
+            return 0;
+        }
         Instant now = Instant.now();
         Duration timeElapsed = Duration.between(startTime, now);
         double hoursElapsed = timeElapsed.toMillis() / 1000.0 / 60.0 / 60.0;
-
         return alchsPerformed / hoursElapsed;
     }
 
