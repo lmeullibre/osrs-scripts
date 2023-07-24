@@ -22,6 +22,7 @@ public class Utils {
     private int activeItemQuantity;
     private Queue<Item> profitableItems;  // Changed from List to Queue
 
+    private int natureRunePrice;
     private Instant startTime;
     private int alchsPerformed;
 
@@ -135,5 +136,14 @@ public class Utils {
 
     public int getProfit(){
         return this.earnedCoins -this.spentCoins;
+    }
+
+    public void setNatureRunePrice(int natureRunePrice) {
+        this.natureRunePrice = natureRunePrice;
+    }
+
+
+    public int getNatureRunePrice(){
+        return this.natureRunePrice;
     }
 }

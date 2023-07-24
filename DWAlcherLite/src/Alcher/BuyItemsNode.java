@@ -48,14 +48,12 @@ public class BuyItemsNode extends Node {
             sleepUntil(() -> GrandExchange.isOpen(), 2000, 1000);
         }
 
-        final int NATURE_RUNE_COST = LivePrices.get("Nature Rune");
+        final int NATURE_RUNE_COST = utils.getNatureRunePrice();
         int maxPrice = activeItem.getHighAlchValue() - NATURE_RUNE_COST;
         int maxQuantity;
         if (utils.getSpentCoins() + utils.getMaxCoinsPerSet() > utils.getMaxCoins()) {
-            // if not, calculate the maximum quantity we can afford with the remaining coins
             maxQuantity = (utils.getMaxCoins() - utils.getSpentCoins()) / maxPrice;
         } else {
-            // otherwise, continue as usual
             maxQuantity = utils.getMaxCoinsPerSet() / maxPrice;
         }
 

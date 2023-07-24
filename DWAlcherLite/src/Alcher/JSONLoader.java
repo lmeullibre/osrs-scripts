@@ -34,9 +34,15 @@ public class JSONLoader {
                 JsonArray itemsArray = JsonParser.parseString(response.toString()).getAsJsonArray();
 
                 List<Item> items = new ArrayList<>();
+
+                int natureRunePrice = 0;  // Initialize the Nature Rune price to zero
+
                 for (int i = 0; i < itemsArray.size(); i++) {
                     JsonObject itemObj = itemsArray.get(i).getAsJsonObject();
                     JsonElement idElement = itemObj.get("id");
+                    if (itemObj.get("item").getAsString().equals("Nature rune")) {
+                        natureRunePrice = itemObj.get("ge_price").getAsInt();  // Get the Nature Rune price
+                    }
                     if (idElement != null && !idElement.isJsonNull()) {
                         int itemId = idElement.getAsInt();
                         Item item = new Item(itemId, 1);
@@ -53,6 +59,9 @@ public class JSONLoader {
                 for (Item item : items) {
                     utils.addProfitableItem(item);
                 }
+
+                utils.setNatureRunePrice(natureRunePrice);
+
             } else {
                 System.out.println("Failed to fetch data from the microservice. Response code: " + responseCode);
             }
