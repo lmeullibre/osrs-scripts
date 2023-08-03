@@ -1,57 +1,95 @@
 package Banker;
 
+import com.google.api.core.ApiFuture;
+import com.google.api.core.ApiFutureCallback;
+import com.google.api.core.ApiFutures;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.common.util.concurrent.MoreExecutors;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import com.google.firebase.database.*;
+import com.google.gson.Gson;
 import org.dreambot.api.wrappers.items.Item;
 
+import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 
 public class Utils {
+    private static CountDownLatch latch;
 
-    private static final String URL = "http://127.0.0.1:5000/api/items";
 
-    public static void sendPostRequest(List<Item> items) {
+    private static DatabaseReference dbRef;
+
+    static {
+        try {
+            FileInputStream serviceAccount = new FileInputStream(""); //replace for credential files
+
+            FirebaseOptions options = new FirebaseOptions.Builder()
+                    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                    .setDatabaseUrl("") //replace for database url
+                    .build();
+
+            FirebaseApp.initializeApp(options);
+            dbRef = FirebaseDatabase.getInstance().getReference();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void updateDatabase(List<Item> items, String id) throws InterruptedException {
+        System.out.println(id);
         if (items == null) {
             System.out.println("The items list is null");
             return;
         }
+        latch = new CountDownLatch(1);
 
-        StringBuilder jsonInputString = new StringBuilder("[");
-
+        Map<String, Object> itemsMap = new HashMap<>();
         for (Item item : items) {
-            if (item == null) {
-                System.out.println("An item in the list is null");
-                continue;
-            }
-            jsonInputString.append("{\"id\":").append(item.getID()).append(", \"name\":\"").append(item.getName()).append("\", \"quantity\":").append(item.getAmount()).append("},");
+            Map<String, Object> itemDetails = new HashMap<>();
+            itemDetails.put("name", item.getName());
+            itemDetails.put("position", 43);
+            itemsMap.put(String.valueOf(item.getID()), itemDetails);
         }
 
-        jsonInputString = new StringBuilder(jsonInputString.substring(0, jsonInputString.length() - 1) + "]");
+        DatabaseReference itemsRef = dbRef.child("items/"+id);
 
+        ApiFuture<Void> future = itemsRef.setValueAsync(itemsMap);
         try {
-            URL urlObj = new URL(URL);
-            HttpURLConnection conn = (HttpURLConnection) urlObj.openConnection();
+            future.get();  // This will block the current thread
+            System.out.println("Write successful");
+        } catch (Exception e) {
+            System.out.println("Write failed: " + e.getMessage());
+        }
 
-            conn.setConnectTimeout(5000);
-            conn.setRequestProperty("Content-Type", "application/json; utf-8");
-            conn.setRequestProperty("Accept", "application/json");
-            conn.setDoOutput(true);
-            conn.setDoInput(true);
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("items/"+id);
 
-            try (OutputStream os = conn.getOutputStream()) {
-                byte[] input = jsonInputString.toString().getBytes(StandardCharsets.UTF_8);
-                os.write(input, 0, input.length);
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                System.out.println("data changed");
+                Boolean value = dataSnapshot.child("ready").getValue(Boolean.class);
+                if (value != null && value) {
+                    System.out.println("good item changes");
+                    latch.countDown();
+                }
             }
 
-            int code = conn.getResponseCode();
-            System.out.println(code);
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("Error: " + databaseError.getCode());
+            }
+        };
+        ref.addValueEventListener(valueEventListener);
 
-            conn.disconnect();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        latch.await();
     }
 }
