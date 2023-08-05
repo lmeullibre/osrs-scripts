@@ -1,4 +1,4 @@
-package Banker;
+package banker;
 import java.util.UUID;
 
 import org.dreambot.api.methods.container.impl.bank.Bank;

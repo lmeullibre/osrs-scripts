@@ -1,4 +1,4 @@
-package Banker;
+package banker;
 
 import com.google.api.core.ApiFuture;
 import com.google.api.core.ApiFutureCallback;
@@ -30,11 +30,11 @@ public class Utils {
 
     static {
         try {
-            FileInputStream serviceAccount = new FileInputStream(""); //replace for credential files
+            FileInputStream serviceAccount = new FileInputStream("DWBankSorter/google-services.json"); //replace for credential files
 
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                    .setDatabaseUrl("") //replace for database url
+                    .setDatabaseUrl("https://osrs-banker-default-rtdb.europe-west1.firebasedatabase.app/") //replace for database url
                     .build();
 
             FirebaseApp.initializeApp(options);
