@@ -1,4 +1,5 @@
 package Banker;
+import java.util.UUID;
 
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankTab;
@@ -34,7 +35,12 @@ public class Main extends TaskScript {
                 .collect(Collectors.toList());
 
         // Call the sendPostRequest method with the nonNullItems list
-        Utils.sendPostRequest(nonNullItems);
+        UUID uuid = UUID.randomUUID();
+        try {
+            Utils.updateDatabase(nonNullItems, String.valueOf(uuid));
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
