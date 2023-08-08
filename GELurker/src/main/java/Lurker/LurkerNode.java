@@ -71,6 +71,9 @@ public class LurkerNode extends Node {
         List<GroundItem> items = GroundItems.all();
         items.sort(Comparator.comparingInt(item -> (int) item.distance(Players.getLocal())));
         for (GroundItem item : items) {
+            if (Inventory.isFull()) {
+                break;
+            }
             if (item != null && utils.getGrandExchangeArea().contains(item)) {
                 if (LivePrices.get(item.getItem()) >= utils.getMinimum() && !utils.isNonWantedItem(item.getName())) {
                     item.interact("Take");
@@ -81,6 +84,9 @@ public class LurkerNode extends Node {
                         List<GroundItem> itemsOutside = GroundItems.all();
                         itemsOutside.sort(Comparator.comparingInt(i -> (int) i.distance(Players.getLocal())));
                         for (GroundItem itemOutside : itemsOutside) {
+                            if (Inventory.isFull()) {
+                                break;
+                            }
                             if (itemOutside != null && utils.getBigArea().contains(itemOutside)) {
                                 if (LivePrices.get(itemOutside.getItem()) >= utils.getMinimum() && !utils.isNonWantedItem(itemOutside.getName())){
                                     itemOutside.interact("Take");

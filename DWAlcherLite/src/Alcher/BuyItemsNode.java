@@ -29,6 +29,7 @@ public class BuyItemsNode extends Node {
 
     @Override
     public int execute() {
+        utils.calculateMaxCoinsPerSet();
         Item activeItem = utils.getActiveItem();
         GrandExchangeItem offer = GrandExchange.getItem(activeItem.getID());
 

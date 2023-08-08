@@ -50,7 +50,7 @@ public class MainClass extends TaskScript implements ItemContainerListener {
         if (s == "Lurker.LurkerNode") s = "Looking for items";
         else if (s == "Lurker.BankNode") s = "Banking items";
         else if (s == "Lurker.ToGrandExchangeNode") s = "Going to Grand Exchange";
-        g.drawString("State:: " + s, 12, 77);
+        g.drawString("State:: " + previousNode.getClass().getName(), 12, 77);
         g.drawString("Total collected: " + total + " coins.", 12, 120);
         g.drawString("Minimum: "+utils.getMinimum()+" coins.", 12, 140);
         if (Instance.getProxyName() != null){

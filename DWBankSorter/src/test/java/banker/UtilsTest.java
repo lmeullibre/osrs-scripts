@@ -1,6 +1,5 @@
 package banker;
 
-import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.wrappers.items.Item;
 import org.junit.Assert;
 import org.junit.Test;

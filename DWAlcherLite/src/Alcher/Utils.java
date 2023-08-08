@@ -1,5 +1,6 @@
 package Alcher;
 import org.dreambot.api.methods.Calculations;
+import org.dreambot.api.methods.grandexchange.LivePrices;
 import org.dreambot.api.wrappers.items.Item;
 
 import java.time.Duration;
@@ -39,6 +40,7 @@ public class Utils {
         maxCoinsPerSet = 10000;
         earnedCoins = 0;
         maxCoins = 2147483647;
+        calculateMaxCoinsPerSet();
     }
 
     public boolean isRunning() {
@@ -147,5 +149,14 @@ public class Utils {
 
     public int getNatureRunePrice(){
         return this.natureRunePrice;
+    }
+
+    public void calculateMaxCoinsPerSet() {
+        Item activeItem = getActiveItem();
+        if (activeItem != null) {
+            final int NATURE_RUNE_COST = getNatureRunePrice();
+            int maxPrice = LivePrices.get(activeItem.getID());
+            maxCoinsPerSet = maxPrice * 100; // Modify this calculation as needed
+        }
     }
 }
