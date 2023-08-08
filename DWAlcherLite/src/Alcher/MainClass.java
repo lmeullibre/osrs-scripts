@@ -21,7 +21,7 @@ import java.util.List;
 
 import static org.dreambot.api.methods.input.mouse.MouseSettings.setSpeed;
 
-@ScriptManifest(version = 1.03, author = "dreamwiver", category = Category.MAGIC, name = "DW Alcher Lite")
+@ScriptManifest(version = 1.04, author = "dreamwiver", category = Category.MAGIC, name = "DW Alcher Lite")
 public class MainClass extends TaskScript {
     private Utils utils = new Utils();
     private GUI gui;

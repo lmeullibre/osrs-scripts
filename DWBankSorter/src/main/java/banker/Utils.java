@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import org.dreambot.api.wrappers.items.Item;
 
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -23,17 +24,17 @@ import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
 public class Utils {
-    private static CountDownLatch latch;
+   // private static CountDownLatch latch;
 
 
     private static DatabaseReference dbRef;
 
     static {
         try {
-            FileInputStream serviceAccount = new FileInputStream("DWBankSorter/google-services.json"); //replace for credential files
+            InputStream inputStream = Utils.class.getClassLoader().getResourceAsStream("google-services.json");
 
             FirebaseOptions options = new FirebaseOptions.Builder()
-                    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                    .setCredentials(GoogleCredentials.fromStream(inputStream))
                     .setDatabaseUrl("https://osrs-banker-default-rtdb.europe-west1.firebasedatabase.app/") //replace for database url
                     .build();
 
@@ -50,7 +51,7 @@ public class Utils {
             System.out.println("The items list is null");
             return;
         }
-        latch = new CountDownLatch(1);
+       // latch = new CountDownLatch(1);
 
         Map<String, Object> itemsMap = new HashMap<>();
         for (Item item : items) {
@@ -72,24 +73,24 @@ public class Utils {
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("items/"+id);
 
-        ValueEventListener valueEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                System.out.println("data changed");
-                Boolean value = dataSnapshot.child("ready").getValue(Boolean.class);
-                if (value != null && value) {
-                    System.out.println("good item changes");
-                    latch.countDown();
-                }
-            }
+       // ValueEventListener valueEventListener = new ValueEventListener() {
+         //   @Override
+        //    public void onDataChange(DataSnapshot dataSnapshot) {
+         //       System.out.println("data changed");
+         //       Boolean value = dataSnapshot.child("ready").getValue(Boolean.class);
+          //      if (value != null && value) {
+         //           System.out.println("good item changes");
+         //           latch.countDown();
+          //      }
+          //  }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("Error: " + databaseError.getCode());
-            }
-        };
-        ref.addValueEventListener(valueEventListener);
+           // @Override
+          //  public void onCancelled(DatabaseError databaseError) {
+           //     System.out.println("Error: " + databaseError.getCode());
+           // }
+        //};
+       // ref.addValueEventListener(valueEventListener);
 
-        latch.await();
+        //latch.await();
     }
 }
