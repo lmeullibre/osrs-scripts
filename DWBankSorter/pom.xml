@@ -1,58 +1,39 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>banker</groupId>
-    <artifactId>Banker</artifactId>
+    <groupId>com.dreamwiver.dwbanker</groupId>
+    <artifactId>dwbanker</artifactId>
     <version>1.0</version>
 
     <properties>
+        <!-- java properties -->
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- dreambot properties -->
         <dreambot.path>${user.home}/DreamBot/</dreambot.path>
     </properties>
-    <repositories>
-        <repository>
-            <id>dreambot</id>
-            <name>dreambot</name>
-            <url>https://downloads.dreambot.org/maven/</url>
-        </repository>
-    </repositories>
+
     <dependencies>
         <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-jmx</artifactId>
-            <version>9.4.44.v20210927</version>
+            <groupId>io.github.cdimascio</groupId>
+            <artifactId>java-dotenv</artifactId>
+            <version>5.2.2</version>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.jetty.websocket</groupId>
-            <artifactId>websocket-server</artifactId>
-            <version>9.4.44.v20210927</version>
+            <groupId>dreambot</groupId>
+            <artifactId>client</artifactId>
+            <version>3.0.0</version>
+            <scope>system</scope>
+            <systemPath>${dreambot.path}/BotData/client.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.13.2</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.dreambot</groupId>
-            <artifactId>client</artifactId>
-            <version>3.0.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>2.0.5</version> <!-- Use the latest version available -->
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>2.0.5</version> <!-- Use the latest version available -->
         </dependency>
     </dependencies>
     <build>
@@ -62,23 +43,9 @@
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.2.1</version>
                 <configuration>
-
                     <shadedArtifactAttached>true</shadedArtifactAttached>
                     <shadedClassifierName>dep-included</shadedClassifierName>
                     <outputDirectory>${dreambot.path}/Scripts</outputDirectory>
-
-                    <filters>
-                        <filter>
-                            <artifact>*:*</artifact>
-                            <excludes>
-                                <exclude>META-INF/*.SF</exclude>
-                                <exclude>META-INF/*.DSA</exclude>
-                                <exclude>META-INF/*.RSA</exclude>
-                                <exclude>META-INF/*.MF</exclude> <!-- Exclude manifest files -->
-                            </excludes>
-                        </filter>
-                    </filters>
-
                 </configuration>
                 <executions>
                     <execution>
