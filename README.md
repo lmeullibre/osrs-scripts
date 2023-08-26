@@ -9,7 +9,7 @@ Bot that automates item collection from the Grand Exchange. Prioritizing high-va
 
 
 ## DW Intelligent High Alcher 
-This is your go-to tool for profitable high alching in Old School Runescape. It buys and alchs the most profitable items from the Grand Exchange, utilizing real-time data from a regularly updated external service. With its intuitive user interface and robust anti-bot detection measures, this bot offers a secure, user-friendly, and efficient alching experience.
+Complex tool which monitorizes the most profitable items from grand exchange, buys them and alchs them for a 100% guaranteed profit.
 
 
 ## DW AutoTrader
