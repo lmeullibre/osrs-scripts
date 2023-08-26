@@ -9,7 +9,7 @@ Bot that automates item collection from the Grand Exchange. Prioritizing high-va
 
 
 ## DW Intelligent High Alcher 
-Complex tool which monitorizes the most profitable items from grand exchange, buys them and alchs them for a 100% guaranteed profit.
+Tool which monitorizes the most profitable items from grand exchange, buys them and alchs them for a 100% guaranteed profit.
 
 
 ## DW AutoTrader
