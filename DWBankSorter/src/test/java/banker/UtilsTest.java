@@ -11,6 +11,12 @@ import java.util.UUID;
 public class UtilsTest {
 
     @Test
+    public void disconnectSockets(){
+        Utils.closeSocket();
+        Assert.assertEquals(1,1);
+    }
+
+    @Test
     public void updateDatabase() throws InterruptedException {
         Item item = new Item(5636, 1);
         Item item2 = new Item(22846, 1);
