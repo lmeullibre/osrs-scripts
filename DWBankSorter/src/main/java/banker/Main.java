@@ -39,6 +39,7 @@ public class Main extends TaskScript {
     @Override
     public void onExit() {
         gui.frame.dispose();
+        log("adeiossss");
 
     }
 
