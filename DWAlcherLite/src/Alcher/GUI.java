@@ -14,16 +14,17 @@ import java.awt.event.WindowEvent;
 public class GUI {
 
     private Utils utils;
+    public JFrame frame;
 
     public GUI(Utils utils) {
         this.utils = utils;
-        JFrame g = new JFrame("DW Alcher Lite");
-        g.setSize(1000, 1000);
-        g.setLocationByPlatform(true);
-        g.setResizable(false);
-        g.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame = new JFrame("DW Alcher Lite");
+        frame.setSize(1000, 1000);
+        frame.setLocationByPlatform(true);
+        frame.setResizable(false);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        g.addWindowListener(new WindowAdapter() {
+        frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 utils.kill();
@@ -33,7 +34,6 @@ public class GUI {
         JPanel panel = new JPanel();
 
         JButton startButton = new JButton("Start");
-        startButton.setToolTipText("<html>Before pressing Start, make sure you are near the Grand Exchange,<br>have enough coins, and have nature runes in your inventory.</html>");
         JLabel titleLabel = new JLabel("DW Alcher Lite");
         JLabel subtitleLabel = new JLabel("by Dreamwiver");
         JLabel descriptionLabel = new JLabel("Maximum coins to spend:");
@@ -54,7 +54,7 @@ public class GUI {
                     utils.setMaxCoins(maxCoins);
                 }
                 utils.setRunning();
-                g.dispose();
+                frame.dispose();
             }
         });
 
@@ -84,14 +84,13 @@ public class GUI {
         panel.add(infoLabel);
         panel.add(Box.createRigidArea(new Dimension(0, 10)));  // Adds a 10-pixel-high space
         panel.add(startButton);
-        g.add(panel);
-        g.getContentPane().setLayout(new BorderLayout());
-        g.getContentPane().add(panel, BorderLayout.NORTH);
-        g.pack();
-        g.setVisible(true);
+        frame.add(panel);
+        frame.getContentPane().setLayout(new BorderLayout());
+        frame.getContentPane().add(panel, BorderLayout.NORTH);
+        frame.pack();
+        frame.setVisible(true);
     }
 
-    // Document filter to allow only numeric input and limit to a maximum value
     private static class NumberOnlyFilter extends DocumentFilter {
         private int maxValue;
 

@@ -26,32 +26,62 @@ public class MainClass extends TaskScript {
     private Utils utils = new Utils();
     private GUI gui;
 
-    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-
-
     @Override
     public void onStart(){
-        addNodes(new BuyItemsNode(utils), new AlchItemsNode(utils), new StopNode(utils));
-        utils.loadProfitableItems();
+        addNodes(new BuyItemsNode(utils), new AlchItemsNode(utils) ,new StartNode(utils));
         SwingUtilities.invokeLater(() -> gui = new GUI(utils));
         utils.startTiming();
         setSpeed(10);
     }
 
-    public void onPaint(Graphics2D g) {
-        g.setColor(Color.WHITE);
-        g.fillRect(10, 68, 200, 62); // adjust this to fit your text
+    @Override
+    public void onExit() {
+        gui.frame.dispose();
+    }
 
-        g.setColor(Color.BLACK);
-        if (utils.getActiveItem() != null) {
-            g.drawString("Active item: " + utils.getActiveItem().getName() ,12,80);
+    public void onPaint(Graphics2D g) {
+        int screenHeight = 400;  // Adjust based on actual screen size
+        int yStart = screenHeight - 50;
+
+        Font titleFont = new Font("SansSerif", Font.BOLD, 12);
+        Font defaultFont = new Font("SansSerif", Font.PLAIN, 10);
+
+        g.setColor(new Color(0, 0, 0, 200));  // Semi-transparent background
+        g.fillRect(10, yStart, 300, 120);
+
+        g.setColor(Color.YELLOW);
+        g.drawRect(10, yStart, 300, 120);
+
+        g.setFont(titleFont);
+        g.setColor(Color.YELLOW);
+        g.drawString("Bot Status Overview", 14, yStart + 12);
+
+        g.setFont(defaultFont);
+        g.setColor(Color.WHITE);
+
+        Item activeItem = utils.getActiveItem();
+        if (activeItem != null) {
+            g.drawString("Active item: " + activeItem.getName(), 14, yStart + 27);
+            if (utils.getActiveItemQuantity() != -1) {
+                g.drawString("Items left: " + utils.getActiveItemQuantity(), 14, yStart + 42);
+            }
+        } else {
+            g.drawString("No active item currently.", 14, yStart + 27);
         }
-        if (utils.getActiveItemQuantity() != -1) {
-            g.drawString("Items left: " + utils.getActiveItemQuantity() ,12,95);
-        }
-        g.drawString("Coins spent: " + utils.getSpentCoins() ,12,110);
+
+        g.drawString("Coins spent: " + utils.getSpentCoins(), 14, yStart + 57);
+
         double alchsPerHour = utils.getAlchsPerHour();
-        double expPerHour = alchsPerHour * 65; // 65 exp gained per alch
-        g.drawString("Experience per hour: " + (int)expPerHour, 12, 125);
+        double expPerHour = alchsPerHour * 65;  // Assuming each alch gives 65 XP
+        g.drawString("Experience per hour: " + (int) expPerHour, 14, yStart + 72);
+
+        if (utils.isKilled()) {
+            g.setColor(Color.RED);
+            g.drawString("Bot has been killed - check logs!", 14, yStart + 87);
+        }
+
+        int profit = utils.getProfit();
+        g.setColor(Color.GREEN);
+        g.drawString("Profit: " + utils.getProfit() + " coins", 14, yStart + 102);
     }
 }
