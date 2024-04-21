@@ -12,7 +12,13 @@ import static org.dreambot.api.methods.input.mouse.MouseSettings.setSpeed;
 public class Utils {
     private boolean isRunning;
 
+    public boolean shouldStop;
+
     private boolean killed;
+
+    public boolean isReady;
+
+    private String status;
 
     private int maxCoinsPerSet;
 
@@ -37,10 +43,12 @@ public class Utils {
         mistakeRate = 0.1;
         spentCoins = 0;
         profitableItems = new LinkedList<>();  // Initialized as a LinkedList, which is a type of Queue
-        maxCoinsPerSet = 10000;
+        maxCoinsPerSet = 20000;
         earnedCoins = 0;
         maxCoins = 2147483647;
-        calculateMaxCoinsPerSet();
+        status = "idle";
+        shouldStop = false;
+        isReady = false;
     }
 
     public boolean isRunning() {
@@ -151,12 +159,19 @@ public class Utils {
         return this.natureRunePrice;
     }
 
-    public void calculateMaxCoinsPerSet() {
-        Item activeItem = getActiveItem();
-        if (activeItem != null) {
-            final int NATURE_RUNE_COST = getNatureRunePrice();
-            int maxPrice = LivePrices.get(activeItem.getID());
-            maxCoinsPerSet = maxPrice * 100; // Modify this calculation as needed
-        }
+    public void setStatus(String status){
+        this.status = status;
+    }
+
+    public String getStatus(){
+        return this.status;
+    }
+
+    public void setIsReady() {
+        this.isReady = true;
+    }
+
+    public boolean isReady() {
+        return this.isReady;
     }
 }

@@ -12,11 +12,14 @@ import org.dreambot.api.methods.grandexchange.Status;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.magic.Magic;
 import org.dreambot.api.methods.magic.Normal;
+import org.dreambot.api.methods.magic.Spellbook;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.wrappers.items.Item;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class AlchItemsNode extends Node {
     private Utils utils;
@@ -28,26 +31,18 @@ public class AlchItemsNode extends Node {
 
     @Override
     public boolean accept() {
-        // Get active item and its quantity
-        if (!utils.isRunning()) return false;
-        Item activeItem = utils.getActiveItem();
-        int quantity = utils.getActiveItemQuantity();
-
-        if (activeItem != null && quantity > 0) {
-            GrandExchangeItem offer = GrandExchange.getItem(activeItem.getID());
-            return offer == null || offer.getStatus() == Status.EMPTY;
-        }
-
-        return false;
+        return utils.isRunning() && utils.isReady()  && Magic.canCast(Normal.HIGH_LEVEL_ALCHEMY) && utils.getActiveItem() != null && utils.getActiveItemQuantity() > 0;
     }
 
     @Override
     public int priority() {
-        return 1;
+        return 2;
     }
 
     @Override
     public int execute() {
+        log("Alching");
+
         if (Math.random() < utils.getMistakeRate()) {
             Camera.rotateTo(Calculations.random(0, 360), Calculations.random(0, 90));
         }
@@ -95,8 +90,11 @@ public class AlchItemsNode extends Node {
                     return Calculations.random(1000, 2000);
                 }
 
-                Inventory.drag(itemToAlch.getID(), 15);
-                sleepUntil(() -> Inventory.slotContains(itemToAlch.getID(), 15), 2000, 1000);
+                if (Inventory.slotContains(15, itemToAlch.getID())){
+                    Inventory.drag(itemToAlch.getID(), 15);
+                    sleepUntil(() ->Inventory.slotContains(15, itemToAlch.getID()), 10000, 1000);
+
+                }
 
                 Magic.castSpellOn(Normal.HIGH_LEVEL_ALCHEMY, itemToAlch);
                 sleepUntil(() -> Inventory.count(itemToAlch.getID()) < initialNoteCount, 2000, 1000);
@@ -108,6 +106,26 @@ public class AlchItemsNode extends Node {
                 utils.setActiveItemQuantity(currentAmount - 1);
             }
         }
+
+        if (utils.getActiveItemQuantity() == 0) {
+            String activeItemName = (utils.getActiveItem() != null) ? utils.getActiveItem().getName() : "";
+            String[] excludedItems = {"Staff of fire", "Nature rune", "Coins", activeItemName};
+            Item[] inventoryItems = Inventory.all().toArray(new Item[0]);
+            if (inventoryItems != null) {
+                for (Item item : inventoryItems) {
+                    if (item != null && !Arrays.asList(excludedItems).contains(item.getName()) && Magic.canCast(Normal.HIGH_LEVEL_ALCHEMY)) {
+                        int initialNoteCount = Inventory.count(item.getID());
+                        Magic.castSpellOn(Normal.HIGH_LEVEL_ALCHEMY, item);
+                        sleepUntil(() -> Inventory.count(item.getID()) < initialNoteCount, 2000, 1000);
+
+                        int earned = item.getHighAlchValue() - utils.getNatureRunePrice();
+                        utils.incrementProfit(earned);
+                        utils.incrementAlchsPerformed();
+                    }
+                }
+            }
+        }
+
         utils.setRandomMouseSpeed();
         return Calculations.random(1000, 3000);
     }
