@@ -43,7 +43,7 @@ public class Utils {
         mistakeRate = 0.1;
         spentCoins = 0;
         profitableItems = new LinkedList<>();  // Initialized as a LinkedList, which is a type of Queue
-        maxCoinsPerSet = 20000;
+        maxCoinsPerSet = 40000;
         earnedCoins = 0;
         maxCoins = 2147483647;
         status = "idle";
