@@ -9,6 +9,7 @@ import org.dreambot.api.methods.grandexchange.Status;
 import org.dreambot.api.script.ScriptManager;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.Item;
+import java.util.Random;
 
 public class BuyItemsNode extends Node {
     private Utils utils;
@@ -36,6 +37,7 @@ public class BuyItemsNode extends Node {
     public int execute() {
         log("Buying");
         utils.setStatus("Buying");
+        Random random = new Random();
 
         long currentTime = System.currentTimeMillis();
         if (currentTime - lastUpdateItemTime > UPDATE_INTERVAL) {
@@ -50,6 +52,9 @@ public class BuyItemsNode extends Node {
         if (!GrandExchange.isOpen()) {
             GrandExchange.open();
             sleepUntil(() -> GrandExchange.isOpen(), 2000, 1000);
+            if (!GrandExchange.isOpen()){
+                return Calculations.random(1000, 3000);
+            }
         }
 
         final int NATURE_RUNE_COST = utils.getNatureRunePrice();
@@ -61,6 +66,10 @@ public class BuyItemsNode extends Node {
         int availableBudget = Math.min(globalBudgetLeft, setBudgetLeft);
         if (availableBudget > 0) {
             maxQuantity = availableBudget / maxPrice;
+            int adjustment = random.nextInt(6) - 5;
+
+            // Adjust maxQuantity
+            maxQuantity += adjustment;
         } else {
             log("Budget exhausted");
             ScriptManager.getScriptManager().stop();

@@ -62,6 +62,7 @@ public class AlchItemsNode extends Node {
         Item activeItem = utils.getActiveItem();
         int quantity = utils.getActiveItemQuantity();
 
+
         if(!Inventory.contains(activeItem.getName())){
             Bank.setWithdrawMode(BankMode.NOTE);
             Bank.withdraw(activeItem.getName(), quantity);
