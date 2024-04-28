@@ -39,6 +39,12 @@ public class BuyItemsNode extends Node {
         utils.setStatus("Buying");
         Random random = new Random();
 
+        if (!Inventory.contains("Nature rune")){
+            System.err.println("No more Nature runes!");
+            ScriptManager.getScriptManager().stop();
+            return Calculations.random(1000, 3000);
+        }
+
         long currentTime = System.currentTimeMillis();
         if (currentTime - lastUpdateItemTime > UPDATE_INTERVAL) {
             utils.loadProfitableItems();

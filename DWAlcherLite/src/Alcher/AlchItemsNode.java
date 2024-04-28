@@ -15,6 +15,7 @@ import org.dreambot.api.methods.magic.Normal;
 import org.dreambot.api.methods.magic.Spellbook;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
+import org.dreambot.api.script.ScriptManager;
 import org.dreambot.api.wrappers.items.Item;
 
 import java.awt.*;
