@@ -19,4 +19,7 @@ Simplifies your Old School Runescape trading experience, accepting all incoming 
 ## DW Obor Slayer 
 This script is designed to farm Hill giants for Giant Keys, challenge the Obor boss, and efficiently manage recovery tasks including prayer points replenishment, health restoration, and inventory management at the bank. 
 
+## Graveyard of Shadows Planker
+Picks planks at the graveyard of shadows. 
+
 **For educational purposes only**
