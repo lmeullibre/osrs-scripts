@@ -12,9 +12,6 @@ public class Utils {
         start = false;
     }
 
-    public boolean isRunning() {
-        return start;
-    }
 
     public Area getArea() {
         return this.area;
