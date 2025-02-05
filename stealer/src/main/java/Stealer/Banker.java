@@ -3,12 +3,6 @@ package Stealer;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
-import org.dreambot.api.methods.interactive.Players;
-import org.dreambot.api.methods.map.Area;
-import org.dreambot.api.methods.map.Tile;
-import org.dreambot.api.methods.walking.impl.Walking;
-
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Banker extends Node {
     public Banker(Utils utils) {
