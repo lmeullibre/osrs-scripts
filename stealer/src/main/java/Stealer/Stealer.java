@@ -5,6 +5,7 @@ import org.dreambot.api.methods.Calculations;
 
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
+
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.widgets.message.Message;
 

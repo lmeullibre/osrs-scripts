@@ -7,6 +7,7 @@ import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.walking.impl.Walking;
+
 import org.dreambot.api.script.Category;
 import org.dreambot.api.script.ScriptManifest;
 import org.dreambot.api.script.TaskNode;
@@ -38,10 +39,6 @@ public class Main extends TaskScript {
         log("Checking if player is in the area");
         Tile currentTile = Players.getLocal().getTile();
         Area area = utils.getArea();
-        if (!area.contains(currentTile)) {
-            log("Player not in Area. Please go to the Bazaar");
-            Walking.walk(utils.getArea().getRandomTile());
-        }
         log("Checking if the player has enough inventory space");
         if (Inventory.getEmptySlots() < 5) {
             log("Not enough free inventory slots. Please have at least 4 inventory slots");
@@ -56,6 +53,7 @@ public class Main extends TaskScript {
         Instance.getInstance().addEventListener(stealer);
         Instance.getInstance().addEventListener(waiter);
         addNodes(waiter, stealer, walker, banker);
+
     }
 
     private long countCoins() {
