@@ -51,9 +51,11 @@ public class Main extends TaskScript {
         Stealer stealer = new Stealer(utils);
         Waiter waiter = new Waiter(utils);
         Walker walker = new Walker(utils);
+        Banker banker = new Banker(utils);
+
         Instance.getInstance().addEventListener(stealer);
         Instance.getInstance().addEventListener(waiter);
-        addNodes(waiter, stealer, walker);
+        addNodes(waiter, stealer, walker, banker);
     }
 
     private long countCoins() {

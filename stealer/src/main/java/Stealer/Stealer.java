@@ -4,6 +4,7 @@ package Stealer;
 import org.dreambot.api.methods.Calculations;
 
 import org.dreambot.api.methods.interactive.NPCs;
+import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.widgets.message.Message;
 
@@ -36,6 +37,9 @@ public class Stealer extends Node {
     @Override
     public int execute() {
         NPC leo = NPCs.closest("Leo");
+        if (Players.getLocal().isInteractedWith()){
+            return Calculations.random(500, 2000);
+        }
         if (leo == null)  return Calculations.random(500, 2000);
 
         sleepUntil(leo::isInteractedWith, 10000, 1000);

@@ -1,38 +1,37 @@
 package Stealer;
 
-
 import org.dreambot.api.methods.Calculations;
-
-import org.dreambot.api.methods.interactive.NPCs;
+import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.walking.impl.Walking;
-import org.dreambot.api.wrappers.interactive.NPC;
-import org.dreambot.api.wrappers.widgets.message.Message;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class Walker extends Node {
-    public Walker(Utils utils) {
+public class Banker extends Node {
+    public Banker(Utils utils) {
         super(utils);
     }
 
     @Override
     public int priority() {
-        return 2;
+        return 3;
     }
 
     @Override
     public boolean accept() {
-        Tile playerPosition = Players.getLocal().getTile();
-        Area bazaarArea = utils.getArea();
-        return !bazaarArea.contains(playerPosition);
+        return Inventory.getEmptySlots() <= 4;
     }
 
     @Override
     public int execute() {
-        Walking.walk(new Tile(1680, 3108));
+        Bank.open();
+        if (Bank.isOpen()) {
+            Bank.depositAllItems();
+            Bank.close();
+        }
         return Calculations.random(500, 2000);
     }
 }
