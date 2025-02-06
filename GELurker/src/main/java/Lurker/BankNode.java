@@ -31,9 +31,9 @@ public class BankNode extends Node {
             if (banker.hasAction("Bank")){
                 banker.interact("Bank");
                 sleepUntil(()-> Players.getLocal().isMoving(), 1000, 1000);
-                sleepUntil(()-> Bank.isOpen(), 1000, 1000);
+                sleepUntil(Bank::isOpen, 1000, 1000);
                 Bank.depositAllItems();
-                sleepUntil(()-> Inventory.isEmpty(), 1000, 1000);
+                sleepUntil(Inventory::isEmpty, 1000, 1000);
                 Bank.close();
                 sleepUntil(()-> !Bank.isOpen(), 1000, 1000);
             }
