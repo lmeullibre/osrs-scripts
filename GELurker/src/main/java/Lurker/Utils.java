@@ -29,7 +29,6 @@ public class Utils {
     public Utils(){
         start = false;
         nonWantedItems = new ArrayList<>();
-        statusURL = "https://django-server-production-f068.up.railway.app/manager/get_status/1/";
     }
 
     public int getMinimum(){
@@ -66,28 +65,6 @@ public class Utils {
 
     public boolean isNonWantedItem(String itemName){
         return nonWantedItems.contains(itemName.toLowerCase());
-    }
-
-    public boolean fetchStatusFromServer() {
-        boolean status = false;
-        try {
-            URL url = new URL(statusURL);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.setRequestProperty("Accept", "application/json");
-
-            if (conn.getResponseCode() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
-            }
-
-            Reader reader = new InputStreamReader(conn.getInputStream(), "UTF-8");
-            Map<String, Object> map = new Gson().fromJson(reader, Map.class);
-            status = (Boolean) map.get("status");
-            conn.disconnect();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return status;
     }
 
     public void removeNonWantedItem(String item) {
