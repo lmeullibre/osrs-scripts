@@ -22,4 +22,7 @@ This script is designed to farm Hill giants for Giant Keys, challenge the Obor b
 ## Graveyard of Shadows Planker
 Picks planks at the graveyard of shadows. 
 
+## Stealer
+Steals from Wealthy Citizens at the Bazaar
+
 **For educational purposes only**
