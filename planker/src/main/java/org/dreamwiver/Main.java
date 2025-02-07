@@ -14,12 +14,6 @@ public class Main extends TaskScript {
     @Override
     public void onStart() {
         log("Starting script");
-        Area startArea = new Area(3124, 3639, 3143, 3618);
-        Tile startingTile = Players.getLocal().getTile();
-        if (!startArea.contains(startingTile)){
-            log("Cannot start script. Please move your character to the Ferox Enclave");
-            stop();
-        }
-        addNodes(new Banker(), new PlankPicker());
+        addNodes(new Banker(), new PlankPicker(), new Walker());
     }
 }
