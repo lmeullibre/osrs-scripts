@@ -7,6 +7,7 @@ import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.walking.impl.Walking;
+
 import org.dreambot.api.script.Category;
 import org.dreambot.api.script.ScriptManifest;
 import org.dreambot.api.script.TaskNode;
@@ -42,6 +43,7 @@ public class Main extends TaskScript {
         Instance.getInstance().addEventListener(stealer);
         Instance.getInstance().addEventListener(waiter);
         addNodes(waiter, stealer, walker, banker);
+
     }
 
     private long countCoins() {
