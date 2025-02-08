@@ -35,16 +35,6 @@ public class Main extends TaskScript {
         startCoins = countCoins();
         currentCoins = startCoins;
 
-        log("Starting bot");
-        log("Checking if player is in the area");
-        Tile currentTile = Players.getLocal().getTile();
-        Area area = utils.getArea();
-        log("Checking if the player has enough inventory space");
-        if (Inventory.getEmptySlots() < 5) {
-            log("Not enough free inventory slots. Please have at least 4 inventory slots");
-        }
-        log("Player is in the Area. Starting script");
-
         Stealer stealer = new Stealer(utils);
         Waiter waiter = new Waiter(utils);
         Walker walker = new Walker(utils);
