@@ -1,12 +1,9 @@
 package Stealer;
 
 import org.dreambot.api.methods.container.impl.Inventory;
-import org.dreambot.api.methods.interactive.Players;
-import org.dreambot.api.methods.map.Area;
-import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
-import org.dreambot.api.methods.walking.impl.Walking;
+
 import org.dreambot.api.script.Category;
 import org.dreambot.api.script.ScriptManifest;
 import org.dreambot.api.script.TaskNode;
@@ -26,13 +23,18 @@ public class Main extends TaskScript {
     private long startXp;
     private long startCoins;
     private long currentCoins;
+    private long initialCoins;
+    private long initialXp;
 
     @Override
     public void onStart() {
         startTime = Instant.now();
-        startXp = Skills.getExperience(Skill.THIEVING);
-        startCoins = countCoins();
-        currentCoins = startCoins;
+        initialXp = Skills.getExperience(Skill.THIEVING);
+        initialCoins = countCoins();
+
+        startXp = 0;
+        startCoins = 0;
+        currentCoins = 0;
 
         Stealer stealer = new Stealer(utils);
         Waiter waiter = new Waiter(utils);
@@ -75,30 +77,26 @@ public class Main extends TaskScript {
 
     public void onPaint(Graphics2D g) {
         TaskNode previousNode = getLastTaskNode();
+        if (previousNode == null) return;
         String stateName = previousNode.getClass().getSimpleName();
         String displayState = formatStateForDisplay(stateName);
 
-        // Update current values
-        long currentXp = Skills.getExperience(Skill.THIEVING);
-        currentCoins = countCoins();
+        long currentXp = Skills.getExperience(Skill.THIEVING) - initialXp;
+        currentCoins = countCoins() - initialCoins;
         Duration runTime = Duration.between(startTime, Instant.now());
         double hoursElapsed = runTime.toMillis() / 3600000.0;
 
-        // Calculate gains
         long xpGained = currentXp - startXp;
         long coinsGained = currentCoins - startCoins;
 
-        // Calculate per hour rates
-        int xpPerHour = (int) (xpGained / hoursElapsed);
-        int coinsPerHour = (int) (coinsGained / hoursElapsed);
+        int xpPerHour = hoursElapsed > 0 ? (int) (xpGained / hoursElapsed) : 0;
+        int coinsPerHour = hoursElapsed > 0 ? (int) (coinsGained / hoursElapsed) : 0;
 
-        // Configure text rendering
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
                 RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g.setFont(new Font("Arial", Font.PLAIN, 12));
         g.setColor(Color.WHITE);
 
-        // Draw information
         int y = 77;
         int lineHeight = 15;
 
