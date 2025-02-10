@@ -44,6 +44,7 @@ public class Main extends TaskScript {
         Instance.getInstance().addEventListener(stealer);
         Instance.getInstance().addEventListener(waiter);
         addNodes(waiter, stealer, walker, banker);
+
     }
 
     private long countCoins() {
