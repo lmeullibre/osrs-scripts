@@ -56,12 +56,10 @@ public class Stealer extends Node {
 
         log(interactedWith.getName());
 
-        // Add human-like delay before pickpocketing
         sleep(Calculations.random(600, 1200));
 
         interactedWith.interact("Pickpocket");
 
-        // Add small variable delay after initiating pickpocket
         sleep(Calculations.random(200, 400));
 
         NPC finalInteractedWith = interactedWith;
